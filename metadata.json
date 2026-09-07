@@ -1,0 +1,7 @@
+{
+  "name": "Visiting Card Material & Pricing Showcase",
+  "description": "Showcase of visiting card materials, special features, transparent pricing, and instant WhatsApp direct contact with custom admin dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
