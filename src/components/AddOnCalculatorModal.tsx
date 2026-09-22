@@ -14,7 +14,7 @@ interface AddOnOption {
   id: string;
   name: string;
   description: string;
-  pricePer500: number; // cost per 500 cards
+  pricePer1000: number; // cost per 1000 cards
 }
 
 const ADDON_OPTIONS: AddOnOption[] = [
@@ -22,31 +22,31 @@ const ADDON_OPTIONS: AddOnOption[] = [
     id: 'round-corners',
     name: '4-Corner Rounded Die-Cut',
     description: 'Precision curved corners matching international luxury credit card standards.',
-    pricePer500: 150,
+    pricePer1000: 250,
   },
   {
     id: 'spot-uv',
     name: 'Raised Spot UV Gloss Highlighting',
     description: '3D clear gloss elevation on your logo, company name, or brand emblem.',
-    pricePer500: 350,
+    pricePer1000: 600,
   },
   {
     id: 'gold-foil',
-    name: 'Metallic Hot Foil Stamping (Gold / Silver)',
+    name: 'Metallic Hot Foil Stamping (Gold / Silver / Rose Gold)',
     description: 'Genuine reflective metallic foil stamped under heat for shimmering distinction.',
-    pricePer500: 500,
+    pricePer1000: 850,
   },
   {
     id: 'deboss',
     name: 'Blind Deboss / Letterpress Impression',
     description: 'Deep physical tactile indentation pressed into thick cotton or board.',
-    pricePer500: 450,
+    pricePer1000: 750,
   },
   {
     id: 'edge-gilding',
     name: 'Luxury Edge Gilding / Tinted Edges',
     description: 'Hand-applied gold, copper, or matte black edge coloring on card perimeter.',
-    pricePer500: 400,
+    pricePer1000: 700,
   },
 ];
 
@@ -59,25 +59,21 @@ export const AddOnCalculatorModal: React.FC<AddOnCalculatorModalProps> = ({
   if (!isOpen) return null;
 
   const [selectedCardId, setSelectedCardId] = useState<string>(cards[0]?.id || '');
-  const [quantity, setQuantity] = useState<number>(500);
+  const [quantity, setQuantity] = useState<number>(1000); // 100 removed, 1000 default!
   const [printSides, setPrintSides] = useState<'single' | 'double'>('double');
   const [selectedAddons, setSelectedAddons] = useState<string[]>(['spot-uv']);
   const [customArtwork, setCustomArtwork] = useState<string>('Ready PDF file with vector curves');
 
   const currentCard = cards.find((c) => c.id === selectedCardId) || cards[0];
 
-  // Base price computation
+  // Base price computation tailored to 1000 / 2000 / 3000
   const getBaseCardPrice = () => {
-    if (!currentCard) return 700;
-    if (quantity <= 100) return currentCard.price100;
-    if (quantity <= 500) {
-      // Interpolate for 250 or exact 500
-      if (quantity === 250) return Math.round(currentCard.price500 * 0.65);
-      return currentCard.price500;
-    }
-    if (quantity <= 1000) return currentCard.price1000;
-    // 2000 bulk
-    return Math.round(currentCard.price1000 * 1.85);
+    if (!currentCard) return 2450;
+    if (quantity === 1000) return currentCard.price1000;
+    if (quantity === 2000) return currentCard.price2000;
+    if (quantity === 3000) return currentCard.price3000;
+    // 5000 volume bulk
+    return Math.round(currentCard.price3000 * 1.55);
   };
 
   const basePrice = getBaseCardPrice();
@@ -86,13 +82,12 @@ export const AddOnCalculatorModal: React.FC<AddOnCalculatorModalProps> = ({
   const sideMultiplier = printSides === 'single' ? 0.9 : 1.0;
   const adjustedBase = Math.round(basePrice * sideMultiplier);
 
-  // Add-on computation scaled by quantity ratio
-  const qtyRatio = quantity / 500;
+  // Add-on computation scaled by quantity ratio from 1000 baseline
+  const qtyRatio = quantity / 1000;
   const addonsTotal = selectedAddons.reduce((sum, addonId) => {
     const opt = ADDON_OPTIONS.find((o) => o.id === addonId);
     if (!opt) return sum;
-    // slightly discounted scaling for large quantities
-    const scaled = Math.round(opt.pricePer500 * Math.pow(qtyRatio, 0.85));
+    const scaled = Math.round(opt.pricePer1000 * Math.pow(qtyRatio, 0.88));
     return sum + scaled;
   }, 0);
 
@@ -113,9 +108,10 @@ export const AddOnCalculatorModal: React.FC<AddOnCalculatorModalProps> = ({
 
     const msg = `*Custom Business Card Quotation Inquiry:*
 Proprietor: ${config.ownerName} (${config.shopName})
+Factory Hub: ${config.cityState}
 
-📌 *Base Material:* ${currentCard.name} (${currentCard.material}, ${currentCard.gsm})
-📦 *Quantity:* ${quantity} Cards
+📌 *Base Material:* ${currentCard.name} (${currentCard.material})
+📦 *Selected Batch:* ${quantity} Cards
 📐 *Printing:* ${printSides === 'double' ? 'Double-Side Full Color (Front & Back)' : 'Single-Side Full Color'}
 ✨ *Custom Finishes Selected:* ${selectedAddonNames || 'Standard Finish (No add-ons)'}
 🎨 *Artwork Status:* ${customArtwork}
@@ -123,7 +119,7 @@ Proprietor: ${config.ownerName} (${config.shopName})
 💰 *Estimated Package Price:* ${config.currency}${finalTotalPrice}
 🏷️ *Unit Cost:* ${config.currency}${perCardPrice} / card
 
-Please confirm if digital proofs and sample pictures can be shared before print run. Thank you!`;
+Please confirm digital proofs and turnaround schedule. Thank you!`;
 
     const whatsappUrl = `https://wa.me/${config.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
       msg
@@ -134,7 +130,7 @@ Please confirm if digital proofs and sample pictures can be shared before print 
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/45 backdrop-blur-xs overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-xs overflow-y-auto">
         <motion.div
           initial={{ opacity: 0, scale: 0.96, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -144,7 +140,7 @@ Please confirm if digital proofs and sample pictures can be shared before print 
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-full bg-[#EFE5D8] hover:bg-[#EADBCC] text-neutral-900 transition-colors"
+            className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-full bg-[#EFE5D8] hover:bg-[#EADBCC] text-neutral-900 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -152,13 +148,13 @@ Please confirm if digital proofs and sample pictures can be shared before print 
           {/* Header */}
           <div className="mb-6 pr-8">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EADBCC] text-neutral-900 border border-[#CDBAA5]">
-              <Calculator className="w-3.5 h-3.5 text-neutral-900" /> Commercial Finish & Price Estimator
+              <Calculator className="w-3.5 h-3.5 text-neutral-900" /> Commercial Volume & Finish Estimator
             </span>
             <h3 className="text-2xl sm:text-3xl font-bold font-['Playfair_Display',serif] text-neutral-900 mt-2">
-              Custom Finishing & Volume Calculator
+              Business Card Batch & Add-On Calculator
             </h3>
             <p className="text-xs sm:text-sm text-neutral-700 mt-1">
-              Select card board material, printing sides, and custom embellishments (Die-cut, Spot UV, Gold Foil) for instant transparent pricing.
+              Select card board material, batch quantity (1000, 2000, 3000), and custom embellishments for instant transparent factory pricing.
             </p>
           </div>
 
@@ -174,7 +170,7 @@ Please confirm if digital proofs and sample pictures can be shared before print 
                     key={card.id}
                     type="button"
                     onClick={() => setSelectedCardId(card.id)}
-                    className={`p-3 rounded-xl text-left transition-all border ${
+                    className={`p-3 rounded-xl text-left transition-all border cursor-pointer ${
                       selectedCardId === card.id
                         ? 'bg-[#F4ECE3] border-neutral-900 text-neutral-900 shadow-xs'
                         : 'bg-white border-[#EAE0D3] text-neutral-700 hover:bg-[#FAF7F2]'
@@ -194,19 +190,19 @@ Please confirm if digital proofs and sample pictures can be shared before print 
               </div>
             </div>
 
-            {/* 2. Quantity & Printing Sides */}
+            {/* 2. Quantity (1000, 2000, 3000, 5000) & Printing Sides */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-white rounded-2xl p-4 border border-[#DECFC0]">
                 <label className="block text-xs font-extrabold uppercase tracking-wider text-neutral-800 mb-2">
-                  Step 2: Required Quantity
+                  Step 2: Batch Quantity (1000 / 2000 / 3000)
                 </label>
-                <div className="grid grid-cols-3 sm:grid-cols-2 gap-2">
-                  {[100, 250, 500, 1000, 2000].map((qty) => (
+                <div className="grid grid-cols-2 gap-2">
+                  {[1000, 2000, 3000, 5000].map((qty) => (
                     <button
                       key={qty}
                       type="button"
                       onClick={() => setQuantity(qty)}
-                      className={`py-2 px-2 text-xs font-bold rounded-xl transition-all border ${
+                      className={`py-2.5 px-2 text-xs font-bold rounded-xl transition-all border cursor-pointer ${
                         quantity === qty
                           ? 'bg-neutral-900 text-white border-neutral-900 shadow-xs'
                           : 'bg-[#F6EFE6] text-neutral-800 border-[#DECFC0] hover:bg-[#EFE5D8]'
@@ -220,13 +216,13 @@ Please confirm if digital proofs and sample pictures can be shared before print 
 
               <div className="bg-white rounded-2xl p-4 border border-[#DECFC0]">
                 <label className="block text-xs font-extrabold uppercase tracking-wider text-neutral-800 mb-2">
-                  Step 3: Print Orientation
+                  Step 3: Print Sides
                 </label>
                 <div className="space-y-2">
                   <button
                     type="button"
                     onClick={() => setPrintSides('double')}
-                    className={`w-full p-2.5 rounded-xl text-xs font-bold flex items-center justify-between border ${
+                    className={`w-full p-2.5 rounded-xl text-xs font-bold flex items-center justify-between border cursor-pointer ${
                       printSides === 'double'
                         ? 'bg-[#F4ECE3] border-neutral-900 text-neutral-900'
                         : 'bg-white border-[#EAE0D3] text-neutral-700'
@@ -238,66 +234,56 @@ Please confirm if digital proofs and sample pictures can be shared before print 
                   <button
                     type="button"
                     onClick={() => setPrintSides('single')}
-                    className={`w-full p-2.5 rounded-xl text-xs font-bold flex items-center justify-between border ${
+                    className={`w-full p-2.5 rounded-xl text-xs font-bold flex items-center justify-between border cursor-pointer ${
                       printSides === 'single'
                         ? 'bg-[#F4ECE3] border-neutral-900 text-neutral-900'
                         : 'bg-white border-[#EAE0D3] text-neutral-700'
                     }`}
                   >
-                    <span>Single-Side Front Only</span>
+                    <span>Single-Side Full Color</span>
                     {printSides === 'single' && <Check className="w-4 h-4 text-neutral-900" />}
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* 3. Luxury Add-On Embellishments */}
+            {/* 3. Luxury Embellishments */}
             <div className="bg-white rounded-2xl p-4 border border-[#DECFC0]">
-              <div className="flex items-center justify-between mb-3">
-                <label className="text-xs font-extrabold uppercase tracking-wider text-neutral-800">
-                  Step 4: Premium Finishes & Add-Ons
-                </label>
-                <span className="text-[11px] text-neutral-500 font-medium">Select multiple</span>
-              </div>
-              <div className="space-y-2.5">
+              <label className="block text-xs font-extrabold uppercase tracking-wider text-neutral-800 mb-2">
+                Step 4: Optional Luxury Enhancements
+              </label>
+              <div className="space-y-2">
                 {ADDON_OPTIONS.map((addon) => {
                   const isChecked = selectedAddons.includes(addon.id);
-                  const scaledCost = Math.round(addon.pricePer500 * Math.pow(qtyRatio, 0.85));
-
                   return (
                     <div
                       key={addon.id}
                       onClick={() => toggleAddon(addon.id)}
-                      className={`p-3 rounded-xl border flex items-start justify-between gap-3 cursor-pointer transition-all ${
+                      className={`p-3 rounded-xl border flex items-start gap-3 cursor-pointer transition-all ${
                         isChecked
-                          ? 'bg-[#FAF7F2] border-neutral-900'
-                          : 'bg-white border-[#EAE0D3] hover:bg-[#FBF9F6]'
+                          ? 'bg-[#FAF7F2] border-neutral-900 shadow-xs'
+                          : 'bg-white border-[#EAE0D3] hover:bg-[#FAF7F2]/50'
                       }`}
                     >
-                      <div className="flex items-start gap-3">
-                        <div
-                          className={`w-5 h-5 rounded-md border mt-0.5 flex items-center justify-center shrink-0 transition-colors ${
-                            isChecked
-                              ? 'bg-neutral-900 border-neutral-900 text-white'
-                              : 'border-[#CDBAA5] bg-white'
-                          }`}
-                        >
-                          {isChecked && <Check className="w-3.5 h-3.5" />}
-                        </div>
-                        <div>
-                          <span className="text-xs font-bold text-neutral-900 block">
-                            {addon.name}
-                          </span>
-                          <p className="text-[11px] text-neutral-600 leading-snug">
-                            {addon.description}
-                          </p>
-                        </div>
+                      <div
+                        className={`w-5 h-5 rounded-md mt-0.5 flex items-center justify-center border transition-colors ${
+                          isChecked
+                            ? 'bg-neutral-900 border-neutral-900 text-white'
+                            : 'border-[#CDBAA5] bg-white'
+                        }`}
+                      >
+                        {isChecked && <Check className="w-3.5 h-3.5" />}
                       </div>
-                      <div className="text-right shrink-0">
-                        <span className="text-xs font-black text-neutral-900">
-                          +{config.currency}{scaledCost}
-                        </span>
-                        <span className="text-[10px] text-neutral-500 block">for {quantity} pcs</span>
+                      <div className="flex-1 text-xs">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-neutral-900">{addon.name}</span>
+                          <span className="font-mono font-bold text-neutral-800">
+                            +₹{addon.pricePer1000}/1000 cards
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-neutral-600 mt-0.5">
+                          {addon.description}
+                        </p>
                       </div>
                     </div>
                   );
@@ -305,44 +291,37 @@ Please confirm if digital proofs and sample pictures can be shared before print 
               </div>
             </div>
 
-            {/* Price Summary Breakdown Light Brown Box */}
-            <div className="bg-[#F4ECE3] rounded-2xl p-5 border border-[#DECFC0] space-y-3">
-              <div className="flex items-center justify-between text-xs text-neutral-700">
-                <span>Base Printing ({quantity} {currentCard.name} cards):</span>
-                <span className="font-bold text-neutral-900">{config.currency}{adjustedBase}</span>
-              </div>
-              {selectedAddons.length > 0 && (
-                <div className="flex items-center justify-between text-xs text-neutral-700">
-                  <span>Custom Add-ons ({selectedAddons.length} selected):</span>
-                  <span className="font-bold text-neutral-900">+{config.currency}{addonsTotal}</span>
-                </div>
-              )}
-              <div className="pt-2 border-t border-[#DECFC0] flex items-end justify-between">
+            {/* Price Summary & WhatsApp Inquiry */}
+            <div className="p-5 rounded-2xl bg-[#EFE5D8] border border-[#DECFC0] space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
-                  <span className="text-xs text-neutral-600 block font-medium">Final Package Quote:</span>
-                  <div className="text-3xl font-black text-neutral-900 font-['Playfair_Display',serif]">
-                    {config.currency}{finalTotalPrice}
+                  <span className="text-xs text-neutral-700 font-bold block uppercase tracking-wider">
+                    Total Estimated Direct Rate:
+                  </span>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-neutral-900 font-['Playfair_Display',serif]">
+                      {config.currency}{finalTotalPrice}
+                    </span>
+                    <span className="text-xs text-neutral-700">
+                      ({config.currency}{perCardPrice} / card for {quantity} cards)
+                    </span>
                   </div>
                 </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-neutral-800">
-                    {config.currency}{perCardPrice} / card
-                  </span>
-                  <span className="text-[10px] text-emerald-800 block font-semibold">
-                    ✓ All Taxes & Packaging Included
-                  </span>
-                </div>
-              </div>
-            </div>
 
-            {/* Send to WhatsApp */}
-            <button
-              onClick={handleSendQuoteWhatsApp}
-              className="w-full py-3.5 px-6 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-sm shadow-xs transition-all flex items-center justify-center gap-2"
-            >
-              <MessageCircle className="w-4 h-4 text-emerald-400" />
-              <span>Send Custom Specification to WhatsApp ({config.currency}{finalTotalPrice})</span>
-            </button>
+                <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300 self-start sm:self-auto">
+                  Ahmedabad Factory Direct
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleSendQuoteWhatsApp}
+                className="w-full py-3.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer active:scale-98"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Confirm & Order Batch on WhatsApp</span>
+              </button>
+            </div>
           </div>
         </motion.div>
       </div>

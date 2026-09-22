@@ -26,7 +26,7 @@ interface CardItemProps {
 }
 
 export const CardItem: React.FC<CardItemProps> = ({ card, config, index, onOpenInquiry }) => {
-  const [selectedQty, setSelectedQty] = useState<100 | 500 | 1000>(500);
+  const [selectedQty, setSelectedQty] = useState<1000 | 2000 | 3000>(1000);
   // Single flip state that supports both PC hover and Mobile alternating tap (1st tap: back, 2nd tap: front)
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -52,10 +52,10 @@ export const CardItem: React.FC<CardItemProps> = ({ card, config, index, onOpenI
     config.logoUrl ||
     'https://cdn.phototourl.com/free/2026-09-05-47f48cc1-83b5-4418-88e7-41e03a644791.jpg';
 
-  const getPrice = (qty: 100 | 500 | 1000) => {
-    if (qty === 100) return card.price100;
-    if (qty === 500) return card.price500;
-    return card.price1000;
+  const getPrice = (qty: 1000 | 2000 | 3000) => {
+    if (qty === 1000) return card.price1000;
+    if (qty === 2000) return card.price2000;
+    return card.price3000;
   };
 
   const currentPrice = getPrice(selectedQty);
@@ -373,10 +373,10 @@ Please share the digital proof process, delivery schedule, and payment details. 
 
           {/* Quantity Selector Tabs */}
           <div className="grid grid-cols-3 gap-1.5 p-1 bg-[#F4ECE3] rounded-lg border border-[#DECFC0] mb-3">
-            {[100, 500, 1000].map((qty) => (
+            {[1000, 2000, 3000].map((qty) => (
               <button
                 key={qty}
-                onClick={() => setSelectedQty(qty as 100 | 500 | 1000)}
+                onClick={() => setSelectedQty(qty as 1000 | 2000 | 3000)}
                 className={`py-1.5 text-xs font-bold rounded-md transition-all ${
                   selectedQty === qty
                     ? 'bg-neutral-900 text-white shadow-xs'

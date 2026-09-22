@@ -41,7 +41,7 @@ export const InteractiveComparison: React.FC<ComparisonProps> = ({ cards, config
         {cards.map((card) => {
           const isWaterproof = card.category === 'Waterproof PVC';
           const whatsappUrl = `https://wa.me/${config.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-            `Hello ${config.ownerName} (${config.shopName})! I would like to order 500 cards of '${card.name}' (${card.material}) at ${config.currency}${card.price500}.`
+            `Hello ${config.ownerName} (${config.shopName})! I would like to order 1000 cards of '${card.name}' (${card.material}) at ${config.currency}${card.price1000}.`
           )}`;
 
           return (
@@ -84,12 +84,12 @@ export const InteractiveComparison: React.FC<ComparisonProps> = ({ cards, config
                 </div>
 
                 <div className="text-right">
-                  <span className="text-[10px] text-neutral-500 block uppercase font-bold">500 Cards Price</span>
+                  <span className="text-[10px] text-neutral-500 block uppercase font-bold">1000 Cards Price</span>
                   <span className="text-base font-black text-neutral-900">
-                    {config.currency}{card.price500}
+                    {config.currency}{card.price1000}
                   </span>
                   <span className="text-[10px] text-neutral-500 block">
-                    ({config.currency}{(card.price500 / 500).toFixed(2)}/card)
+                    ({config.currency}{(card.price1000 / 1000).toFixed(2)}/card)
                   </span>
                 </div>
               </div>
@@ -103,7 +103,7 @@ export const InteractiveComparison: React.FC<ComparisonProps> = ({ cards, config
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs shadow-xs transition-colors"
               >
                 <MessageCircle className="w-4 h-4 text-emerald-400" />
-                <span>Order 500 Cards on WhatsApp</span>
+                <span>Order 1000 Cards on WhatsApp</span>
               </a>
             </div>
           );
@@ -119,7 +119,7 @@ export const InteractiveComparison: React.FC<ComparisonProps> = ({ cards, config
               <th className="p-4">GSM & Thickness</th>
               <th className="p-4">Key Advantage</th>
               <th className="p-4">Durability</th>
-              <th className="p-4">500 Cards Rate</th>
+              <th className="p-4">1000 Cards Rate</th>
               <th className="p-4 text-center">Direct Order</th>
             </tr>
           </thead>
@@ -127,7 +127,7 @@ export const InteractiveComparison: React.FC<ComparisonProps> = ({ cards, config
             {cards.map((card) => {
               const isWaterproof = card.category === 'Waterproof PVC';
               const whatsappUrl = `https://wa.me/${config.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-                `Hello ${config.ownerName} (${config.shopName})! I would like to order 500 cards of '${card.name}' (${card.material}) at ${config.currency}${card.price500}.`
+                `Hello ${config.ownerName} (${config.shopName})! I would like to order 1000 cards of '${card.name}' (${card.material}) at ${config.currency}${card.price1000}.`
               )}`;
 
               return (
@@ -161,9 +161,9 @@ export const InteractiveComparison: React.FC<ComparisonProps> = ({ cards, config
                     )}
                   </td>
                   <td className="p-4 font-black text-neutral-900 whitespace-nowrap text-base">
-                    {config.currency}{card.price500}
+                    {config.currency}{card.price1000}
                     <span className="text-[11px] font-normal text-neutral-500 block">
-                      ({config.currency}{(card.price500 / 500).toFixed(2)}/card)
+                      ({config.currency}{(card.price1000 / 1000).toFixed(2)}/card)
                     </span>
                   </td>
                   <td className="p-4 text-center">

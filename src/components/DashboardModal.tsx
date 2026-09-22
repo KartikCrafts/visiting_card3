@@ -106,9 +106,9 @@ export const DashboardModal: React.FC<DashboardModalProps> = ({
     finish: 'Matte Smooth',
     khasiyat: ['Premium look & durability', 'Zero smudges', 'High color saturation'],
     bestFor: 'Professionals & Corporate Executives',
-    price100: 400,
-    price500: 1200,
-    price1000: 2000,
+    price1000: 2450,
+    price2000: 4400,
+    price3000: 6150,
     badge: 'New Arrival',
     inStock: true,
     deliveryDays: '2 - 3 Days',
@@ -206,9 +206,9 @@ export const DashboardModal: React.FC<DashboardModalProps> = ({
       finish: 'Matte Smooth',
       khasiyat: ['Premium look & durability'],
       bestFor: 'Professionals',
-      price100: 400,
-      price500: 1200,
-      price1000: 2000,
+      price1000: 2450,
+      price2000: 4400,
+      price3000: 6150,
       badge: 'New Arrival',
       inStock: true,
       deliveryDays: '2 - 3 Days',
@@ -448,7 +448,7 @@ export const DashboardModal: React.FC<DashboardModalProps> = ({
                         <div className="flex items-center gap-3">
                           <div className="text-right text-xs">
                             <span className="font-bold text-neutral-900 block">
-                              100: ₹{card.price100} | 500: ₹{card.price500} | 1000: ₹{card.price1000}
+                              1000: ₹{card.price1000} | 2000: ₹{card.price2000} | 3000: ₹{card.price3000}
                             </span>
                           </div>
 
@@ -563,46 +563,12 @@ export const DashboardModal: React.FC<DashboardModalProps> = ({
                           {/* Prices */}
                           <div className="p-3 bg-[#F6EFE6] rounded-xl border border-[#DECFC0]">
                             <span className="block font-bold text-neutral-900 mb-2">
-                              Update Pricing (₹):
+                              Update Bulk Pricing (₹):
                             </span>
                             <div className="grid grid-cols-3 gap-3">
                               <div>
                                 <label className="block text-[11px] text-neutral-600 mb-1">
-                                  100 Cards Price:
-                                </label>
-                                <input
-                                  type="number"
-                                  value={card.price100}
-                                  onChange={(e) =>
-                                    handleUpdateCardField(
-                                      card.id,
-                                      'price100',
-                                      Number(e.target.value)
-                                    )
-                                  }
-                                  className="w-full px-3 py-1.5 rounded-lg bg-white border border-[#DECFC0] font-bold focus:ring-2 focus:ring-neutral-900 focus:outline-hidden"
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-[11px] text-neutral-600 mb-1">
-                                  500 Cards Price:
-                                </label>
-                                <input
-                                  type="number"
-                                  value={card.price500}
-                                  onChange={(e) =>
-                                    handleUpdateCardField(
-                                      card.id,
-                                      'price500',
-                                      Number(e.target.value)
-                                    )
-                                  }
-                                  className="w-full px-3 py-1.5 rounded-lg bg-white border border-[#DECFC0] font-bold focus:ring-2 focus:ring-neutral-900 focus:outline-hidden"
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-[11px] text-neutral-600 mb-1">
-                                  1000 Cards Price:
+                                  1000 Cards:
                                 </label>
                                 <input
                                   type="number"
@@ -611,6 +577,40 @@ export const DashboardModal: React.FC<DashboardModalProps> = ({
                                     handleUpdateCardField(
                                       card.id,
                                       'price1000',
+                                      Number(e.target.value)
+                                    )
+                                  }
+                                  className="w-full px-3 py-1.5 rounded-lg bg-white border border-[#DECFC0] font-bold focus:ring-2 focus:ring-neutral-900 focus:outline-hidden"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[11px] text-neutral-600 mb-1">
+                                  2000 Cards:
+                                </label>
+                                <input
+                                  type="number"
+                                  value={card.price2000}
+                                  onChange={(e) =>
+                                    handleUpdateCardField(
+                                      card.id,
+                                      'price2000',
+                                      Number(e.target.value)
+                                    )
+                                  }
+                                  className="w-full px-3 py-1.5 rounded-lg bg-white border border-[#DECFC0] font-bold focus:ring-2 focus:ring-neutral-900 focus:outline-hidden"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[11px] text-neutral-600 mb-1">
+                                  3000 Cards:
+                                </label>
+                                <input
+                                  type="number"
+                                  value={card.price3000}
+                                  onChange={(e) =>
+                                    handleUpdateCardField(
+                                      card.id,
+                                      'price3000',
                                       Number(e.target.value)
                                     )
                                   }
@@ -785,34 +785,6 @@ export const DashboardModal: React.FC<DashboardModalProps> = ({
                 <div className="grid grid-cols-3 gap-3">
                   <div>
                     <label className="block text-[11px] text-neutral-600 mb-1">
-                      100 Cards Price
-                    </label>
-                    <input
-                      type="number"
-                      required
-                      value={newCard.price100}
-                      onChange={(e) =>
-                        setNewCard({ ...newCard, price100: Number(e.target.value) })
-                      }
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-[#DECFC0] font-bold focus:ring-2 focus:ring-neutral-900 focus:outline-hidden"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] text-neutral-600 mb-1">
-                      500 Cards Price
-                    </label>
-                    <input
-                      type="number"
-                      required
-                      value={newCard.price500}
-                      onChange={(e) =>
-                        setNewCard({ ...newCard, price500: Number(e.target.value) })
-                      }
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-[#DECFC0] font-bold focus:ring-2 focus:ring-neutral-900 focus:outline-hidden"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] text-neutral-600 mb-1">
                       1000 Cards Price
                     </label>
                     <input
@@ -821,6 +793,34 @@ export const DashboardModal: React.FC<DashboardModalProps> = ({
                       value={newCard.price1000}
                       onChange={(e) =>
                         setNewCard({ ...newCard, price1000: Number(e.target.value) })
+                      }
+                      className="w-full px-3 py-2 rounded-lg bg-white border border-[#DECFC0] font-bold focus:ring-2 focus:ring-neutral-900 focus:outline-hidden"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] text-neutral-600 mb-1">
+                      2000 Cards Price
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      value={newCard.price2000}
+                      onChange={(e) =>
+                        setNewCard({ ...newCard, price2000: Number(e.target.value) })
+                      }
+                      className="w-full px-3 py-2 rounded-lg bg-white border border-[#DECFC0] font-bold focus:ring-2 focus:ring-neutral-900 focus:outline-hidden"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] text-neutral-600 mb-1">
+                      3000 Cards Price
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      value={newCard.price3000}
+                      onChange={(e) =>
+                        setNewCard({ ...newCard, price3000: Number(e.target.value) })
                       }
                       className="w-full px-3 py-2 rounded-lg bg-white border border-[#DECFC0] font-bold focus:ring-2 focus:ring-neutral-900 focus:outline-hidden"
                     />

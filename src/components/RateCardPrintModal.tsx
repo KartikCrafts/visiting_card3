@@ -1,20 +1,22 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Printer, Download, MessageCircle, FileSpreadsheet, ShieldCheck, Check } from 'lucide-react';
-import { VisitingCardItem, ShopConfig } from '../types';
+import { X, Printer, Download, Sparkles, ShieldCheck, Phone, Mail, MapPin } from 'lucide-react';
+import { ProductItem, ShopConfig } from '../types';
 
 interface RateCardPrintModalProps {
   isOpen: boolean;
   onClose: () => void;
-  cards: VisitingCardItem[];
+  products: ProductItem[];
   config: ShopConfig;
+  categoryTitle?: string;
 }
 
 export const RateCardPrintModal: React.FC<RateCardPrintModalProps> = ({
   isOpen,
   onClose,
-  cards,
+  products,
   config,
+  categoryTitle = 'Commercial Printing',
 }) => {
   if (!isOpen) return null;
 
@@ -22,42 +24,40 @@ export const RateCardPrintModal: React.FC<RateCardPrintModalProps> = ({
     window.print();
   };
 
-  const whatsappUrl = `https://wa.me/${config.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-    `Hello ${config.ownerName} (${config.shopName})! I reviewed the complete Business Card Rate Card & Catalog and would like to place a corporate print order.`
-  )}`;
+  const logoUrl =
+    config.logoUrl ||
+    'https://cdn.phototourl.com/free/2026-09-05-47f48cc1-83b5-4418-88e7-41e03a644791.jpg';
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-xs overflow-y-auto print:p-0 print:bg-white">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto">
         <motion.div
-          initial={{ opacity: 0, scale: 0.97, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.97, y: 10 }}
-          className="relative w-full max-w-3xl rounded-3xl bg-white border border-[#DECFC0] shadow-2xl p-6 sm:p-10 text-neutral-900 my-4 max-h-[94vh] overflow-y-auto print:max-h-none print:border-none print:shadow-none print:m-0 print:p-4"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          className="relative w-full max-w-4xl rounded-3xl bg-white border border-[#DECFC0] shadow-2xl p-6 sm:p-10 text-neutral-900 my-4 max-h-[92vh] overflow-y-auto print:p-0 print:border-none print:shadow-none"
         >
-          {/* Controls Bar (Hidden during printing) */}
-          <div className="flex items-center justify-between pb-4 mb-6 border-b border-[#DECFC0] print:hidden">
+          {/* Top Actions (hidden during print) */}
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-neutral-200 print:hidden">
             <div className="flex items-center gap-2">
-              <span className="p-2 rounded-xl bg-[#FAF7F2] border border-[#DECFC0] text-neutral-800">
-                <FileSpreadsheet className="w-5 h-5" />
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#EADBCC] text-neutral-900 border border-[#CDBAA5]">
+                Official Factory Rate Card
               </span>
-              <div>
-                <h4 className="font-bold text-sm text-neutral-900">Official Rate Card & Price Sheet</h4>
-                <p className="text-xs text-neutral-500">Ready for corporate procurement & printable record</p>
-              </div>
+              <span className="text-xs text-neutral-500">
+                Direct Ahmedabad Wholesale Pricing
+              </span>
             </div>
-
             <div className="flex items-center gap-2">
               <button
                 onClick={handlePrint}
-                className="px-4 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs transition-colors cursor-pointer"
               >
-                <Printer className="w-3.5 h-3.5" />
-                <span>Print / Save PDF</span>
+                <Printer className="w-4 h-4" />
+                <span>Print Rate Card</span>
               </button>
               <button
                 onClick={onClose}
-                className="p-2 rounded-xl bg-[#F4ECE3] hover:bg-[#EADBCC] text-neutral-800 transition-colors"
+                className="p-2 rounded-xl bg-[#EFE5D8] hover:bg-[#EADBCC] text-neutral-900 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -65,105 +65,124 @@ export const RateCardPrintModal: React.FC<RateCardPrintModalProps> = ({
           </div>
 
           {/* Printable Document Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-neutral-300">
-            <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-neutral-500 block">
-                Official Visiting Card Quotation & Rate Sheet
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold font-['Playfair_Display',serif] text-neutral-900 mt-0.5">
-                {config.shopName}
-              </h2>
-              <p className="text-xs text-neutral-600 mt-1">
-                Proprietor: <strong>{config.ownerName}</strong> • Direct Phone: {config.displayPhone}
-              </p>
-              <p className="text-xs text-neutral-600">
-                Studio: {config.address}, {config.cityState}
-              </p>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b-2 border-neutral-900">
+            <div className="flex items-center gap-3">
+              <img
+                src={logoUrl}
+                alt={config.shopName}
+                className="w-16 h-16 rounded-full object-cover border border-[#DECFC0] shadow-xs"
+                referrerPolicy="no-referrer"
+              />
+              <div>
+                <h2 className="text-2xl font-bold font-['Playfair_Display',serif] text-neutral-900">
+                  {config.shopName}
+                </h2>
+                <p className="text-xs text-neutral-600 font-medium">{config.tagline}</p>
+                <p className="text-xs text-neutral-500 mt-0.5">
+                  Proprietors: {config.ownerName} • Phone: {config.displayPhone}
+                </p>
+                <p className="text-[11px] text-neutral-500">
+                  Factory: {config.address}, {config.cityState}
+                </p>
+              </div>
             </div>
             <div className="text-left sm:text-right text-xs text-neutral-600 bg-[#FAF7F2] p-3 rounded-xl border border-[#DECFC0] print:border-neutral-300">
-              <p><strong>Effective Date:</strong> {new Date().toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</p>
-              <p><strong>Currency:</strong> Indian Rupee ({config.currency})</p>
-              <p><strong>Heidelberg Offset:</strong> High-Definition 300 DPI</p>
+              <p>
+                <strong>Catalog:</strong> {categoryTitle}
+              </p>
+              <p>
+                <strong>Effective Date:</strong>{' '}
+                {new Date().toLocaleDateString('en-GB', {
+                  month: 'short',
+                  year: 'numeric',
+                })}
+              </p>
+              <p>
+                <strong>Currency:</strong> Indian Rupee ({config.currency})
+              </p>
             </div>
           </div>
 
-          {/* Rate Table */}
+          {/* Product Rates Table */}
           <div className="my-6 overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-[#F8F4EE] border-b-2 border-neutral-300 text-neutral-900 font-extrabold uppercase tracking-wider">
-                  <th className="py-3 px-3">Card Material</th>
-                  <th className="py-3 px-2">GSM / Specs</th>
-                  <th className="py-3 px-2">Finish</th>
-                  <th className="py-3 px-2 text-right">100 Pcs</th>
-                  <th className="py-3 px-2 text-right">500 Pcs</th>
-                  <th className="py-3 px-3 text-right">1000 Pcs</th>
+                <tr className="bg-[#FAF7F2] border-b-2 border-neutral-300 text-neutral-900 font-extrabold uppercase tracking-wider">
+                  <th className="py-3 px-3">Product & Material</th>
+                  <th className="py-3 px-2">Look & Finish</th>
+                  <th className="py-3 px-2">Size / Height x Width</th>
+                  <th className="py-3 px-2">Weight / GSM</th>
+                  <th className="py-3 px-2 text-right">Tier 1 Rate</th>
+                  <th className="py-3 px-2 text-right">Tier 2 Rate</th>
+                  <th className="py-3 px-3 text-right">Tier 3 Rate</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-200">
-                {cards.map((card) => (
-                  <tr key={card.id} className="hover:bg-neutral-50">
-                    <td className="py-3 px-3">
-                      <strong className="text-neutral-900 block font-bold">{card.name}</strong>
-                      <span className="text-[11px] text-neutral-500">{card.material}</span>
-                    </td>
-                    <td className="py-3 px-2 font-medium text-neutral-700">{card.gsm}</td>
-                    <td className="py-3 px-2 text-neutral-600">{card.finish}</td>
-                    <td className="py-3 px-2 text-right font-bold text-neutral-800">
-                      {config.currency}{card.price100}
-                    </td>
-                    <td className="py-3 px-2 text-right font-black text-neutral-900 bg-[#FAF7F2]/50">
-                      {config.currency}{card.price500}
-                    </td>
-                    <td className="py-3 px-3 text-right font-black text-neutral-900">
-                      {config.currency}{card.price1000}
-                    </td>
-                  </tr>
-                ))}
+                {products.map((item) => {
+                  const t1 = item.qtyTiers[0];
+                  const t2 = item.qtyTiers[1];
+                  const t3 = item.qtyTiers[2];
+
+                  return (
+                    <tr key={item.id} className="hover:bg-neutral-50">
+                      <td className="py-3 px-3">
+                        <strong className="text-neutral-900 block font-bold">
+                          {item.name}
+                        </strong>
+                        <span className="text-[11px] text-neutral-600 block line-clamp-1">
+                          {item.material}
+                        </span>
+                      </td>
+                      <td className="py-3 px-2 text-neutral-700">{item.finish}</td>
+                      <td className="py-3 px-2 font-mono text-neutral-600">
+                        {item.dimensions}
+                      </td>
+                      <td className="py-3 px-2 font-semibold text-neutral-800">
+                        {item.weightGsm}
+                      </td>
+                      <td className="py-3 px-2 text-right font-bold text-neutral-800">
+                        {t1 ? `${config.currency}${t1.price} (${t1.label})` : '-'}
+                      </td>
+                      <td className="py-3 px-2 text-right font-bold text-neutral-900 bg-[#FAF7F2]/60">
+                        {t2 ? `${config.currency}${t2.price} (${t2.label})` : '-'}
+                      </td>
+                      <td className="py-3 px-3 text-right font-bold text-neutral-900">
+                        {t3 ? `${config.currency}${t3.price} (${t3.label})` : '-'}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
 
           {/* Terms & Guarantees */}
           <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#DECFC0] print:border-neutral-300 mb-6 text-xs text-neutral-700 space-y-1.5">
-            <h5 className="font-bold text-neutral-900 uppercase tracking-wider text-[11px]">Commercial Printing Terms:</h5>
-            <p>• <strong>Turnaround:</strong> Standard printing and dispatch completed within 24 to 48 business hours.</p>
-            <p>• <strong>Digital Proof Approval:</strong> PDF soft proof sent on WhatsApp before offset plate making.</p>
-            <p>• <strong>Quality Guarantee:</strong> 100% free reprint if there is any printing or cutting defect on our end.</p>
-            <p>• <strong>Custom Finishes:</strong> Spot UV, Metallic Foil, and Rounded Die-Cut available on bulk quantities.</p>
+            <h5 className="font-bold text-neutral-900 uppercase tracking-wider text-[11px]">
+              Commercial Printing Terms & Dispatch:
+            </h5>
+            <p>
+              • <strong>Turnaround:</strong> Standard printing and dispatch completed within 24 to 48 business hours from Ahmedabad.
+            </p>
+            <p>
+              • <strong>Proof Approval:</strong> High-resolution digital proof sent on WhatsApp before offset plate making.
+            </p>
+            <p>
+              • <strong>Quality Guarantee:</strong> 100% free reprint if there is any printing or cutting defect.
+            </p>
+            <p>
+              • <strong>Custom Requirements:</strong> Contact Niraj Vora / Rahul Vora directly for special paper boards or large wholesale volumes.
+            </p>
           </div>
 
-          {/* Signature & Verification */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-neutral-300">
-            <div className="text-xs text-neutral-600">
-              <p>For custom bulk requirements exceeding 5,000 cards, contact Niraj Vora directly.</p>
+          {/* Footer Contact */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-neutral-300 text-xs text-neutral-600">
+            <div>
+              <p>Haya Graphics Commercial Printing Hub, Ahmedabad, Gujarat</p>
             </div>
-            <div className="text-center sm:text-right">
-              <div className="text-sm font-bold text-neutral-900 font-['Playfair_Display',serif]">
-                {config.ownerName}
-              </div>
-              <div className="text-[11px] text-neutral-500">Authorized Signatory • {config.shopName}</div>
+            <div className="font-bold text-neutral-900">
+              WhatsApp / Direct Inquiries: +91 73838 55862
             </div>
-          </div>
-
-          {/* WhatsApp CTA (hidden when printed) */}
-          <div className="mt-6 pt-4 border-t border-neutral-200 print:hidden flex flex-col sm:flex-row gap-3">
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 py-3 px-4 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition-colors"
-            >
-              <MessageCircle className="w-4 h-4 text-emerald-400" />
-              <span>Direct Order via WhatsApp</span>
-            </a>
-            <button
-              onClick={handlePrint}
-              className="py-3 px-4 rounded-xl bg-white hover:bg-[#FAF7F2] text-neutral-800 font-bold text-xs border border-[#DECFC0] flex items-center justify-center gap-2 transition-colors"
-            >
-              <Printer className="w-4 h-4" />
-              <span>Print This Sheet</span>
-            </button>
           </div>
         </motion.div>
       </div>

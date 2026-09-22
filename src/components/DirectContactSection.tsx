@@ -12,7 +12,7 @@ export const DirectContactSection: React.FC<DirectContactProps> = ({ config, car
   const [customerName, setCustomerName] = useState('');
   const [phone, setPhone] = useState('');
   const [selectedMaterial, setSelectedMaterial] = useState(cards[0]?.name || 'Velvet Soft-Touch Luxe');
-  const [quantity, setQuantity] = useState('500');
+  const [quantity, setQuantity] = useState('1000');
   const [customRequirement, setCustomRequirement] = useState('');
   const [isSent, setIsSent] = useState(false);
 
@@ -253,10 +253,10 @@ Hello ${config.ownerName} (${config.shopName}), please confirm the quote and sam
                     onChange={(e) => setQuantity(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#DECFC0] text-neutral-900 text-xs font-bold focus:ring-2 focus:ring-neutral-900 focus:outline-hidden cursor-pointer"
                   >
-                    <option value="100">100 Cards (Trial Pack)</option>
-                    <option value="500">500 Cards (Most Popular Value)</option>
-                    <option value="1000">1000 Cards (Wholesale Best Rate)</option>
-                    <option value="2000+">2000+ Cards (Corporate Bulk)</option>
+                    <option value="1000">1000 Cards (Factory Pack)</option>
+                    <option value="2000">2000 Cards (Wholesale Best Rate)</option>
+                    <option value="3000">3000 Cards (Commercial Bulk)</option>
+                    <option value="5000+">5000+ Cards (Mega Corporate Batch)</option>
                   </select>
                 </div>
               </div>
