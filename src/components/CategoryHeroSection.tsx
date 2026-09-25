@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { ProductCategoryKey, ShopConfig } from '../types';
 import { CATEGORIES_CONFIG } from '../data/categoriesConfig';
+import { ThreeMetalVisitingCard } from './ThreeMetalVisitingCard';
 
 interface CategoryHeroSectionProps {
   activeCategory: ProductCategoryKey;
@@ -184,84 +185,35 @@ export const CategoryHeroSection: React.FC<CategoryHeroSectionProps> = ({
 
               {/* DYNAMIC SIMULATION CONTAINER */}
               <div className="relative min-h-[260px] flex items-center justify-center">
-                {/* 1. VISITING CARDS SIMULATION */}
+                {/* 1. VISITING CARDS SIMULATION - 3D METAL VISITING CARD */}
                 {activeCategory === 'visiting-cards' && (
-                  <div
-                    className="w-full h-56 [perspective:1000px] cursor-pointer select-none"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={handleToggleFlip}
-                    title="Hover on PC or Tap on Mobile to flip"
-                  >
-                    <div
-                      className="relative w-full h-full rounded-xl transition-transform duration-700 [transform-style:preserve-3d]"
-                      style={{
-                        transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                      }}
-                    >
-                      {/* Front Card */}
-                      <div className="absolute inset-0 w-full h-full rounded-xl bg-[#1e242b] text-[#f3ede2] p-5 flex flex-col justify-between shadow-lg border border-white/10 [backface-visibility:hidden]">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2.5">
-                            <img
-                              src={logoUrl}
-                              alt={config.shopName}
-                              className="w-10 h-10 rounded-full object-cover border border-amber-400/40 shadow-xs"
-                              referrerPolicy="no-referrer"
-                            />
-                            <div>
-                              <h3 className="font-bold text-sm font-['Playfair_Display',serif] text-amber-200">
-                                {config.shopName}
-                              </h3>
-                              <p className="text-[10px] text-neutral-300">
-                                450 GSM Velvet Matte Luxe
-                              </p>
-                            </div>
-                          </div>
-                          <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">
-                            AHMEDABAD
-                          </span>
-                        </div>
-                        <div className="text-center py-2">
-                          <p className="text-base font-bold font-['Playfair_Display',serif] text-amber-100">
-                            Vora Niraj & Vora Rahul
-                          </p>
-                          <p className="text-[11px] text-neutral-400">
-                            Commercial Printing & Packaging Specialists
-                          </p>
-                        </div>
-                        <div className="flex items-center justify-between text-[10px] text-neutral-400 border-t border-white/10 pt-2">
-                          <span>3.5" x 2.0" Standard</span>
-                          <span className="text-amber-300">Tap / Hover to Flip</span>
-                        </div>
-                      </div>
+                  <div className="w-full space-y-3">
+                    <ThreeMetalVisitingCard
+                      shopName="HayaGraphics"
+                      ownerName="Niraj Vora"
+                      phoneNumbers={config.displayPhone || "+91 73838 55862 / +91 98258 97010"}
+                      email={config.email || "hayagraphics18@gmail.com"}
+                      address="Commercial Printing Hub, Near Relief Road, Ahmedabad"
+                      logoUrl={logoUrl}
+                    />
 
-                      {/* Back Card */}
-                      <div className="absolute inset-0 w-full h-full rounded-xl bg-[#1e242b] text-[#f3ede2] p-5 flex flex-col justify-between shadow-lg border border-white/10 [backface-visibility:hidden] [transform:rotateY(180deg)]">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-amber-300">
-                            Haya Graphics Direct
-                          </span>
-                          <span className="text-[10px] font-mono text-neutral-400">
-                            Ahmedabad, Gujarat
-                          </span>
-                        </div>
-                        <div className="space-y-1.5 text-left text-xs py-1">
-                          <div className="flex items-center gap-2 text-neutral-300">
-                            <Phone className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                            <span>+91 73838 55862 / 98258 97010</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-neutral-300">
-                            <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                            <span className="text-[11px] truncate">
-                              Near Relief Road, Ahmedabad - 380001
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between text-[10px] text-neutral-400 border-t border-white/10 pt-2">
-                          <span>1000 / 2000 / 3000 Batches</span>
-                          <span className="text-amber-300">Tap to Flip Front</span>
-                        </div>
+                    {/* Card Details: Phone No, Owner, Address */}
+                    <div className="bg-[#FAF7F2] rounded-xl border border-[#DECFC0] p-3 text-xs text-neutral-800 space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-neutral-900 font-['Playfair_Display',serif]">
+                          Niraj Vora (HayaGraphics)
+                        </span>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
+                          Ahmedabad
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-neutral-700 text-xs">
+                        <Phone className="w-3.5 h-3.5 text-neutral-800 shrink-0" />
+                        <span className="font-medium">{config.displayPhone}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-neutral-600 text-[11px]">
+                        <MapPin className="w-3.5 h-3.5 text-neutral-700 shrink-0" />
+                        <span className="truncate">{config.address}, {config.cityState}</span>
                       </div>
                     </div>
                   </div>
