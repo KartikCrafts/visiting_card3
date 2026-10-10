@@ -362,25 +362,44 @@ Please share digital design proof and turnaround schedule. Thank you!`;
         {/* Quantity Selection Buttons */}
         <div>
           <span className="text-xs font-bold text-neutral-800 block mb-2">
-            Select Batch Quantity:
+            {product.qtyTiers.length === 1 ? 'Fixed Order Batch:' : 'Select Batch Quantity:'}
           </span>
-          <div className="grid grid-cols-3 gap-2">
+          <div
+            className={`grid gap-2 ${
+              product.qtyTiers.length === 1
+                ? 'grid-cols-1'
+                : product.qtyTiers.length === 2
+                ? 'grid-cols-2'
+                : 'grid-cols-3'
+            }`}
+          >
             {product.qtyTiers.map((tier) => {
               const isSelected = selectedTier === tier.qty;
               return (
                 <button
                   key={tier.qty}
                   onClick={() => setSelectedTier(tier.qty)}
-                  className={`py-2 px-2 rounded-xl text-xs font-bold transition-all text-center border cursor-pointer ${
+                  className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all text-center border cursor-pointer ${
                     isSelected
                       ? 'bg-neutral-900 text-white border-neutral-900 shadow-sm'
                       : 'bg-[#FAF7F2] text-neutral-800 border-[#DECFC0] hover:bg-[#EFE5D8]'
                   }`}
                 >
-                  <span className="block truncate">{tier.label}</span>
-                  <span className="block text-[10px] font-normal opacity-85 mt-0.5">
-                    ₹{tier.price}
-                  </span>
+                  {product.qtyTiers.length === 1 ? (
+                    <div className="flex items-center justify-between px-1">
+                      <span className="font-bold text-sm">{tier.label}</span>
+                      <span className="text-xs font-mono font-bold bg-amber-500/15 text-amber-900 border border-amber-500/30 px-2 py-0.5 rounded-lg">
+                        ₹{tier.price} Direct Rate
+                      </span>
+                    </div>
+                  ) : (
+                    <>
+                      <span className="block truncate">{tier.label}</span>
+                      <span className="block text-[10px] font-normal opacity-85 mt-0.5">
+                        ₹{tier.price}
+                      </span>
+                    </>
+                  )}
                 </button>
               );
             })}

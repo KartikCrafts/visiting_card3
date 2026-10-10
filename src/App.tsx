@@ -38,9 +38,9 @@ import { InquiryModal } from './components/InquiryModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { UptimeStatusBar } from './components/UptimeStatusBar';
 
-const PRODUCTS_STORAGE_KEY = 'haya_all_products_v5';
-const CONFIG_STORAGE_KEY = 'haya_shop_config_v5';
-const ACTIVE_CAT_STORAGE_KEY = 'haya_active_category_v5';
+const PRODUCTS_STORAGE_KEY = 'haya_all_products_v6';
+const CONFIG_STORAGE_KEY = 'haya_shop_config_v6';
+const ACTIVE_CAT_STORAGE_KEY = 'haya_active_category_v6';
 
 export default function App() {
   // 1. Active Category State (defaults to visiting-cards or stored preference)
@@ -252,9 +252,9 @@ export default function App() {
         dimensions: p.dimensions,
         khasiyat: p.khasiyat,
         bestFor: p.bestFor,
-        price1000: p.qtyTiers.find((t) => t.qty === 1000)?.price || 2450,
-        price2000: p.qtyTiers.find((t) => t.qty === 2000)?.price || 4400,
-        price3000: p.qtyTiers.find((t) => t.qty === 3000)?.price || 6150,
+        price1000: p.qtyTiers.find((t) => t.qty === 1000)?.price || p.qtyTiers[0]?.price || 1450,
+        price2000: p.qtyTiers.find((t) => t.qty === 2000)?.price || p.qtyTiers[0]?.price || 2800,
+        price3000: p.qtyTiers.find((t) => t.qty === 3000)?.price || p.qtyTiers[0]?.price || 4000,
         badge: p.badge,
         inStock: p.inStock,
         deliveryDays: p.deliveryDays,

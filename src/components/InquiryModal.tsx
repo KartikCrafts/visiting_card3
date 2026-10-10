@@ -91,24 +91,43 @@ Hello ${config.ownerName} (${config.shopName} - Ahmedabad), please review and co
             {/* Quantity Tier Selector */}
             <div className="bg-white p-3.5 rounded-2xl border border-[#DECFC0]">
               <label className="block text-xs font-bold text-neutral-800 mb-2">
-                Choose Volume Tier:
+                {product.qtyTiers.length === 1 ? 'Selected Order Batch:' : 'Choose Volume Tier:'}
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div
+                className={`grid gap-2 ${
+                  product.qtyTiers.length === 1
+                    ? 'grid-cols-1'
+                    : product.qtyTiers.length === 2
+                    ? 'grid-cols-2'
+                    : 'grid-cols-3'
+                }`}
+              >
                 {product.qtyTiers.map((tier) => (
                   <button
                     key={tier.qty}
                     type="button"
                     onClick={() => setSelectedQty(tier.qty)}
-                    className={`py-2 px-2 rounded-xl text-xs font-bold transition-all text-center border cursor-pointer ${
+                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all text-center border cursor-pointer ${
                       selectedQty === tier.qty
                         ? 'bg-neutral-900 text-white border-neutral-900 shadow-xs'
                         : 'bg-[#FAF7F2] text-neutral-800 border-[#DECFC0] hover:bg-[#EFE5D8]'
                     }`}
                   >
-                    <span className="block truncate">{tier.label}</span>
-                    <span className="block text-[10px] font-normal opacity-85 mt-0.5">
-                      ₹{tier.price}
-                    </span>
+                    {product.qtyTiers.length === 1 ? (
+                      <div className="flex items-center justify-between px-1">
+                        <span className="font-bold text-sm">{tier.label}</span>
+                        <span className="text-xs font-mono font-bold bg-amber-500/15 text-amber-900 border border-amber-500/30 px-2 py-0.5 rounded-lg">
+                          ₹{tier.price} Package Rate
+                        </span>
+                      </div>
+                    ) : (
+                      <>
+                        <span className="block truncate">{tier.label}</span>
+                        <span className="block text-[10px] font-normal opacity-85 mt-0.5">
+                          ₹{tier.price}
+                        </span>
+                      </>
+                    )}
                   </button>
                 ))}
               </div>

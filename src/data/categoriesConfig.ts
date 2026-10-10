@@ -9,7 +9,7 @@ export const CATEGORIES_CONFIG: CategoryMetadata[] = [
     tagline: 'Premium Business Cards & Exclusive Paper Boards',
     heroHeadline: 'Luxury Business Cards & Distinctive Paper Stocks',
     heroDescription:
-      'Engineered with premium imported art boards, rich velvet touch laminations, authentic textured linens, and embossed gold foil highlights. Direct Ahmedabad factory prices for 1000, 2000, and 3000 volume batches.',
+      'Engineered with premium imported art boards, rich velvet touch, textured linens, waterproof PVC, and non-tearable synthetic cards. Direct Ahmedabad factory prices with tailored batches of 1000, 500, and 800 pcs.',
     sampleUnitName: 'Cards',
     defaultQty: 1000,
   },

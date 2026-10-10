@@ -615,9 +615,17 @@ export const MultiCategoryDashboardModal: React.FC<MultiCategoryDashboardModalPr
                               {/* PRICING TIERS */}
                               <div className="p-3 bg-[#EFE5D8] rounded-xl border border-[#DECFC0]">
                                 <span className="block font-bold text-neutral-900 mb-2">
-                                  Package Rates (₹) - {prod.categoryKey === 'visiting-cards' ? '1000 / 2000 / 3000 Cards' : 'Volume Tiers'}:
+                                  Package Rates (₹) - {prod.categoryKey === 'visiting-cards' ? 'Batch Rates' : 'Volume Tiers'}:
                                 </span>
-                                <div className="grid grid-cols-3 gap-3">
+                                <div
+                                  className={`grid gap-3 ${
+                                    prod.qtyTiers.length === 1
+                                      ? 'grid-cols-1 max-w-xs'
+                                      : prod.qtyTiers.length === 2
+                                      ? 'grid-cols-2'
+                                      : 'grid-cols-3'
+                                  }`}
+                                >
                                   {prod.qtyTiers.map((tier, tIdx) => (
                                     <div key={tIdx}>
                                       <label className="block text-[11px] text-neutral-700 mb-1 font-bold">
